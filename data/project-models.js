@@ -13,9 +13,19 @@ const getProject = id => {
       actions,
     };
   });
+};
+
+const getActions = id => {
+  return db.cb(db => {
+    return db('action')
+      .join('project', 'project.id', 'action.project_id')
+      .select('action.id', 'action.description', 'action.notes', 'action.complete')
+      .where('action.project_id', id);
+  });
 }
 
 module.exports = {
   ...db,
   getProject,
+  getActions,
 };
