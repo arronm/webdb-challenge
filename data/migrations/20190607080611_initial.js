@@ -22,6 +22,6 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return knex.schema
-    .dropTableIfExists('project')
-    .dropTableIfExists('action');
+    .dropTableIfExists('action')
+    .dropTableIfExists('project');
 };

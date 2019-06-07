@@ -19,7 +19,8 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', validateId(db), async (req, res) => {
   try {
-    res.json(req.resource);
+    const action = await db.getAction(req.resource.id);
+    res.json(action);
   } catch (error) {
     res.status(500).json(errorRef(error));
   }
