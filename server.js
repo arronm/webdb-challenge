@@ -57,24 +57,15 @@ server.get('/', (req, res) => {
 });
 
 // POST Project
-server.post('/', validateBody({
+server.post('/api/projects', validateBody({
   name: {
     type: 'string',
     required: true,
   },
-  cohort_id: {
-    type: 'number',
-    required: true,
-    exists: {
-      database: require('./data/models'),
-      table: 'cohorts',
-      column: 'id',
-    }
-  }
 }), async (req, res) => {
   try {
-    const student = await db.add(req.body);
-    res.json(student);
+    const project = await projectDB.add(req.body);
+    res.json(project);
   } catch (error) {
     res.status(500).json(errorRef(error));
   }
