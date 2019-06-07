@@ -1,3 +1,5 @@
+const errorRef = require('../helpers/errorRef');
+
 const validateId = db => async (req, res, next) => {
   try {
     // TODO: update this so the method can change
@@ -11,10 +13,7 @@ const validateId = db => async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      message: 'Unknown server error',
-    });
+    res.status(500).json(errorRef(error));
   }
 }
 
