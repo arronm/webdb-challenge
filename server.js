@@ -36,10 +36,16 @@ const cors = require('cors');
 const server = express();
 const PORT = 4444;
 
+const projectDB = require('./data/project-models');
+const actionDB = require('./data/action-models');
+const errorRef = require('./helpers/errorRef');
+const validateBody = require('./middleware/validateBody');
+const validateId = require('./middleware/validateId');
+
 const middleware = [
   helmet(),
   cors(),
-  express(),
+  express.json(),
 ];
 
 server.use(middleware);
@@ -50,7 +56,57 @@ server.get('/', (req, res) => {
   });
 });
 
-server.get('/api/projects/:id', async (req, res) => {
+// POST Project
+server.post('/', validateBody({
+  name: {
+    type: 'string',
+    required: true,
+  },
+  cohort_id: {
+    type: 'number',
+    required: true,
+    exists: {
+      database: require('./data/models'),
+      table: 'cohorts',
+      column: 'id',
+    }
+  }
+}), async (req, res) => {
+  try {
+    const student = await db.add(req.body);
+    res.json(student);
+  } catch (error) {
+    res.status(500).json(errorRef(error));
+  }
+});
+
+// POST Action
+server.post('/api/actions', validateBody({
+  description: {
+    type: 'string',
+    required: true,
+  },
+  project_id: {
+    type: 'number',
+    required: true,
+    exists: {
+      database: require('./data/models'),
+      table: 'project',
+      column: 'id',
+    }
+  }
+}), async (req, res) => {
+  try {
+    const action = await actionDB.add(req.body);
+    res.json(action);
+  } catch (error) {
+    res.status(500).json(errorRef(error));
+  }
+});
+
+// GET Project By Id
+
+server.get('/api/projects/:id', validateId(projectDB), async (req, res) => {
   try {
     
   } catch (error) {

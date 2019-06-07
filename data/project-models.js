@@ -1,4 +1,4 @@
-const db = require('./models')('recipe');
+const db = require('./models')('project');
 
 // const getRecipe = id => {
 //   return db.cb(async (db) => {
