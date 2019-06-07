@@ -96,12 +96,12 @@ server.post('/api/actions', validateBody({
 });
 
 // GET Project By Id
-
 server.get('/api/projects/:id', validateId(projectDB), async (req, res) => {
   try {
-    
+    const project = await projectDB.getProject(req.params.id);
+    res.json(project);
   } catch (error) {
-    
+    res.status(500).json(errorRef(err));
   }
 });
 
